@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consulta CUIT</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    input, button, select { padding: 10px; margin: 5px 0; }
+    #resultado { margin-top: 20px; padding: 10px; border: 1px solid #ccc; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>Consulta de CUIT</h1>
+  <input type="text" id="cuit" placeholder="Ingrese CUIT (11 dígitos)">
+  <select id="fuente">
+    <option value="afip">AFIP (público)</option>
+    <option value="tusfacturas">TusFacturasAPP</option>
+  </select>
+  <button onclick="consultar()">Consultar</button>
+
+  <div id="resultado"></div>
+
+  <script>
+    async function consultar() {
+      const cuit = document.getElementById("cuit").value;
+      const fuente = document.getElementById("fuente").value;
+      if (!cuit) {
+        alert("Ingrese un CUIT válido");
+        return;
+      }
+
+      try {
+        const response = await fetch("http://localhost:3000/api/consultar_cuit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ cuit, fuente })
+        });
+
+        const data = await response.json();
+        document.getElementById("resultado").innerText = JSON.stringify(data, null, 2);
+      } catch (err) {
+        document.getElementById("resultado").innerHTML = "<p style='color:red;'>Error al consultar</p>";
+      }
+    }
+  </script>
+</body>
+</html>
