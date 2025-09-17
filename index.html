@@ -31,7 +31,7 @@
       }
 
       try {
-        const response = await fetch("https://consulta-cuit-backend.onrender.com/${cuit}", {
+        const response = await fetch("https://consulta-cuit-backend.onrender.com/api/consultar_cuit", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ cuit, fuente })
